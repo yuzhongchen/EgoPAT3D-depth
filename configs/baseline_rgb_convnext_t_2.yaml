@@ -1,0 +1,19 @@
+SEED: 2
+DATA:
+  DATA_ROOT: '/scratch/yc6317/EgoPAT3D/dataset.hdf5'
+MODEL:
+  MODEL_NAME: 'baseline_rgb_convnext_t_2'
+  CHECKPOINT: '/scratch/zf540/EgoPAT3Dv2/prediction/experiment/baseline_rgb_convnext_t_2/checkpoints/baseline_rgb_convnext_t_2-0.000000-0002.pth'
+  ARCH:
+    POINTCLOUD: False
+    RGB: True
+    RGB_BACKBONE: 'ConvNext_Tiny'
+    POS_ENCODING: None
+TRAINING:
+  NUM_EPOCHS: 40
+  OPTIMIZER: 'Adam'
+  LEARNING_RATE: 0.0001
+  DECAY_RATE: 1e-05
+  LOSS: 'RGB_Ori'
+
+  
