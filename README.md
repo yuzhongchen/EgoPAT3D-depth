@@ -19,7 +19,7 @@ Please refer to [here]([https://ai4ce.github.io/EgoPAT3Dv2/]) for EgoPAT3Dv2 dat
 Please modify the DATA.DATAROOT to be the path to your data root.
 
 ## Test and Validate
-Download the pre-trained model [here]([https://drive.google.com/file/d/119Fap67qfxIt1AsCme0ABD3ZjW4c4EIa/view?usp=sharing](https://drive.google.com/drive/folders/1QTOZMX6zNO8-WMuHXZt4h5CXXnv_sewR?usp=sharing)) and set the checkpoints directory.
+Download the pre-trained model [here]([https://drive.google.com/drive/folders/1QTOZMX6zNO8-WMuHXZt4h5CXXnv_sewR?usp=sharing]) and set the checkpoints directory.
 The checkpoint.pth is the weight for EgoPAT3Dv2 model. encoder.pth is for depth encoder. depth.pth is for depth decoder. The pose.pth and pose_encoder is for pose decoder and pose encoder, but they are not used for testing.
 
 For depth estimator
