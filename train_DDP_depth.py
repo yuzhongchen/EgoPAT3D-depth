@@ -330,8 +330,10 @@ def train(encoder, depth_decoder, pose_encoder, pose, dataloader, optimizer, cri
                     continue
                 depth_loss += 1e-6*(((pred_depth[id]-deep)**2)*mask).sum()/masks
 
-        loss["loss"] -= loss["loss"]
-        loss["loss"] += depth_loss
+        if cfg.MODEL.ARCH.MONO == False:
+            loss["loss"] -= loss["loss"]
+        if cfg.MODEL.ARCH.SUP == True:
+            loss["loss"] += depth_loss
 
         total_loss = loss["loss"] + total_loss
 
