@@ -9,7 +9,7 @@ This code has been tested on Ubuntu 20.04, Python 3.7.0, Pytorch 2.0.0, CUDA 11.
 Please install related libraries before running this code. You can e-mail yc6317@nyu.edu to require singularity overlay.
 
 ## Train
-Please use train_DDP_depth.py --config_file ./configs/baseline_rgb_convnext_t.yaml to run the file. A sample training script is saved in baseline_rgb_manual_train.SBATCH.
+Please use train_DDP_depth.py --config_file ./configs/baseline_rgb_convnext_t.yaml to run the file. A sample training script is saved in baseline_rgb_manual_train.SBATCH, please change it into your setting.
 Please updating setting in your config file following the instruction in cfg_defaults.py. The supervised model is trained in current config.
 
 ### Prepare datasets
@@ -19,7 +19,7 @@ Please refer to [here](https://ai4ce.github.io/EgoPAT3Dv2/) for EgoPAT3Dv2 datas
 Please modify the DATA.DATAROOT to be the path to your data root.
 
 ## Test and Validate
-Download the pre-trained model [here](https://drive.google.com/drive/folders/1QTOZMX6zNO8-WMuHXZt4h5CXXnv_sewR?usp=sharing) and set the checkpoints directory.
+Download the pre-trained model [here](https://drive.google.com/drive/folders/1QTOZMX6zNO8-WMuHXZt4h5CXXnv_sewR?usp=sharing) and set the checkpoints directory. A sample test script is saved in baseline_rgb_manual_test.SBATCH, please change it into your setting.
 The checkpoint.pth is the weight for EgoPAT3Dv2 model. encoder.pth is for depth encoder. depth.pth is for depth decoder. The pose.pth and pose_encoder is for pose decoder and pose encoder, but they are not used for testing.
 
 For depth estimator
