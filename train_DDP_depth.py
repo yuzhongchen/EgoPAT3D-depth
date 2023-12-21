@@ -125,13 +125,13 @@ def generate_images_pred(rgb, outputs):
         inputs = p(inputs)
         inputs = inputs.contiguous().view(inputs.shape[0],size,3,224//rate,224//rate)
         disp = outputs[("disp", scale)]
-        # p1 = transforms.Compose([transforms.Resize((224,224))])
-        # disp = p1(disp)
+        p1 = transforms.Compose([transforms.Resize((224,224))])
+        disp = p1(disp)
         source_scale = 0
 
         _, depth = disp_to_depth(disp, 1e-2, 1)
-        print(depth[0])
-        print(depth.shape)
+        # print(depth[0])
+        # print(depth.shape)
 
         outputs[("depth", 0, scale)] = depth
 
@@ -150,8 +150,10 @@ def generate_images_pred(rgb, outputs):
                                 [0., fy, cy, 0.],
                                 [0., 0., 1., 0.],
                                 [0., 0., 0., 1.]], dtype="float32")
-            temp_K[0, :] *= 224 // (2 ** scale)
-            temp_K[1, :] *= 224 // (2 ** scale)
+            # temp_K[0, :] *= 224 // (2 ** scale)
+            # temp_K[1, :] *= 224 // (2 ** scale)
+            temp_K[0, :] *= 224
+            temp_K[1, :] *= 224
             temp_inv_K = np.linalg.pinv(temp_K)
             for id in range(rgb.shape[0]):
                 K[id] = temp_K
@@ -159,8 +161,10 @@ def generate_images_pred(rgb, outputs):
             K = torch.from_numpy(K).float().cuda()
             inv_K = torch.from_numpy(inv_K).float().cuda()
 
-            backproject_depth = BackprojectDepth(rgb.shape[0], 224 // (2 ** scale), 224 // (2 ** scale)).cuda()
-            project_3d = Project3D(rgb.shape[0], 224 // (2 ** scale), 224 // (2 ** scale)).cuda()
+            # backproject_depth = BackprojectDepth(rgb.shape[0], 224 // (2 ** scale), 224 // (2 ** scale)).cuda()
+            # project_3d = Project3D(rgb.shape[0], 224 // (2 ** scale), 224 // (2 ** scale)).cuda()
+            backproject_depth = BackprojectDepth(rgb.shape[0], 224, 224).cuda()
+            project_3d = Project3D(rgb.shape[0], 224, 224).cuda()
 
             cam_points = backproject_depth(
                 depth, inv_K)
@@ -307,28 +311,27 @@ def train(encoder, depth_decoder, pose_encoder, pose, dataloader, optimizer, cri
                                 )
 
         depth_loss = 0
-        loss["loss"] = loss["loss"]
 
-        # for batch_id in range(depth.shape[0]):
-        #     pred = depth_decoder(encoder(rgb[batch_id,:,:,:]))
+        for batch_id in range(depth.shape[0]):
+            pred = depth_decoder(encoder(rgb[batch_id,:,:,:]))
 
-        #     pred_disp, pred_depth = disp_to_depth(pred[("disp", 0)], 1e-2, 1)
-        #     pred_depth = 1000*pred_depth
-        #     for id in range(rangenum[batch_id]):
-        #         deep = depth[batch_id,id,:,:]
-        #         # print(deep)
-        #         # pred_disp = pred_disp.cpu()[:, 0].numpy()
-        #         mask = deep.clone()
-        #         mask[torch.where(mask<10)] = 0
-        #         mask[torch.where(mask>1000)] = 0
-        #         mask[torch.where(mask>10)] = 1
-        #         masks = mask.sum()
-        #         if masks < 10:
-        #             continue
-        #         depth_loss += 1e-6*(((pred_depth[id]-deep)**2)*mask).sum()/masks
+            pred_disp, pred_depth = disp_to_depth(pred[("disp", 0)], 1e-2, 1)
+            pred_depth = 1000*pred_depth
+            for id in range(rangenum[batch_id]):
+                deep = depth[batch_id,id,:,:]
+                # print(deep)
+                # pred_disp = pred_disp.cpu()[:, 0].numpy()
+                mask = deep.clone()
+                mask[torch.where(mask<10)] = 0
+                mask[torch.where(mask>1000)] = 0
+                mask[torch.where(mask>10)] = 1
+                masks = mask.sum()
+                if masks < 10:
+                    continue
+                depth_loss += 1e-6*(((pred_depth[id]-deep)**2)*mask).sum()/masks
 
-        # loss["loss"] -= loss["loss"]
-        # loss["loss"] += depth_loss
+        loss["loss"] -= loss["loss"]
+        loss["loss"] += depth_loss
 
         total_loss = loss["loss"] + total_loss
 
@@ -640,10 +643,28 @@ def main(cfg):
         if global_rank == 0: # only log on the first process
             save_checkpoint(
                 epoch + 1,
-                classifier.module,
+                models["encoder"],
                 optimizer,
                 str(checkpoints_dir),
-                cfg.MODEL.MODEL_NAME)
+                modelnet='encoder')
+            save_checkpoint(
+                epoch + 1,
+                models["depth"],
+                optimizer,
+                str(checkpoints_dir),
+                modelnet='depth')
+            save_checkpoint(
+                epoch + 1,
+                models["pose_encoder"],
+                optimizer,
+                str(checkpoints_dir),
+                modelnet='pose_encoder')
+            save_checkpoint(
+                epoch + 1,
+                models["pose"],
+                optimizer,
+                str(checkpoints_dir),
+                modelnet='pose')
             print('Saving model....')
             print(train_total_loss,val_total_loss)
             logger.info(f'Training Loss: Total: {train_total_loss:.2f}')
