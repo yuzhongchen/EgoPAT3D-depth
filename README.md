@@ -2,7 +2,7 @@
 
 
 ## Abstract
-Besides, we use depth estimation techniques to improve the possibility of improving the performance of the EgoPAT3Dv2  model, so we examined the performance for several depth estimators. To improve the ability of EgoPAT3Dv2 , the best depth estimation algorithm is trained and tested on EgoPAT3Dv2 model by setting the depth of the estimated motion target to be the depth at the 2D position of the motion target in the predicted depth map.
+We use depth estimation techniques to improve the possibility of improving the performance of the EgoPAT3Dv2  model, so we examined the performance for several depth estimators. To improve the ability of EgoPAT3Dv2 , the best depth estimation algorithm is trained and tested on EgoPAT3Dv2 model by setting the depth of the estimated motion target to be the depth at the 2D position of the motion target in the predicted depth map.
 
 ## Environment setup
 This code has been tested on Ubuntu 20.04, Python 3.7.0, Pytorch 2.0.0, CUDA 11.2. Detailed environment is in requirement.txt
