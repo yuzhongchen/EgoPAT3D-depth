@@ -5,11 +5,11 @@
 We use depth estimation techniques to improve the possibility of improving the performance of the EgoPAT3Dv2  model, so we examined the performance for several depth estimators. To improve the ability of EgoPAT3Dv2 , the best depth estimation algorithm is trained and tested on EgoPAT3Dv2 model by setting the depth of the estimated motion target to be the depth at the 2D position of the motion target in the predicted depth map.
 
 ## Environment setup
-This code has been tested on Ubuntu 20.04, Python 3.7.0, Pytorch 2.0.0, CUDA 11.2. Detailed environment is in requirement.txt
-Please install related libraries before running this code. You can e-mail yc6317@nyu.edu to require singularity overlay
+This code has been tested on Ubuntu 20.04, Python 3.7.0, Pytorch 2.0.0, CUDA 11.2. Detailed environment is in requirement.txt.
+Please install related libraries before running this code. You can e-mail yc6317@nyu.edu to require singularity overlay.
 
 ## Train
-Please use train_DDP_depth.py --config_file ./configs/baseline_rgb_convnext_t.yaml to run the file. A sample training script is saved in baseline_rgb_manual_train.SBATCH
+Please use train_DDP_depth.py --config_file ./configs/baseline_rgb_convnext_t.yaml to run the file. A sample training script is saved in baseline_rgb_manual_train.SBATCH.
 Please updating setting in your config file following the instruction in cfg_defaults.py. The supervised model is trained in current config.
 
 ### Prepare datasets
