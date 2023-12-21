@@ -13,13 +13,13 @@ Please use train_DDP_depth.py --config_file ./configs/baseline_rgb_convnext_t.ya
 Please updating setting in your config file following the instruction in cfg_defaults.py. The supervised model is trained in current config.
 
 ### Prepare datasets
-Please refer to [here]([https://ai4ce.github.io/EgoPAT3Dv2/]) for EgoPAT3Dv2 dataset and model. If you have any problem, please contact yc6317@nyu.edu.
+Please refer to [here](https://ai4ce.github.io/EgoPAT3Dv2/) for EgoPAT3Dv2 dataset and model. If you have any problem, please contact yc6317@nyu.edu.
 
 #### Dataset folder hierarchy
 Please modify the DATA.DATAROOT to be the path to your data root.
 
 ## Test and Validate
-Download the pre-trained model [here]([https://drive.google.com/drive/folders/1QTOZMX6zNO8-WMuHXZt4h5CXXnv_sewR?usp=sharing]) and set the checkpoints directory.
+Download the pre-trained model [here](https://drive.google.com/drive/folders/1QTOZMX6zNO8-WMuHXZt4h5CXXnv_sewR?usp=sharing) and set the checkpoints directory.
 The checkpoint.pth is the weight for EgoPAT3Dv2 model. encoder.pth is for depth encoder. depth.pth is for depth decoder. The pose.pth and pose_encoder is for pose decoder and pose encoder, but they are not used for testing.
 
 For depth estimator
